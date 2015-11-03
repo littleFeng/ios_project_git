@@ -105,7 +105,12 @@
     NSLog(@"%f",progress*_width);
     _progressFroView.frame=CGRectMake(0, 0, _width*progress, _height);
     UIBezierPath * maskPath;
-    maskPath=[UIBezierPath bezierPathWithRoundedRect:_progressFroView.bounds byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerBottomLeft) cornerRadii:CGSizeMake(_width*progress, _height)];
+    if(progress<1.0f)
+        maskPath=[UIBezierPath bezierPathWithRoundedRect:_progressFroView.bounds byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerBottomLeft) cornerRadii:CGSizeMake(_width*progress, _height)];
+    
+    else
+        maskPath=[UIBezierPath bezierPathWithRoundedRect:_progressFroView.bounds byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerBottomLeft|UIRectCornerTopRight|UIRectCornerBottomRight) cornerRadii:CGSizeMake(_width*progress, _height)];
+    
     CAShapeLayer * maskLayer=[[CAShapeLayer alloc]init];
     maskLayer.frame=_progressFroView.bounds;
     maskLayer.path=maskPath.CGPath;
@@ -126,11 +131,18 @@
             [self showProgressLabel:progress];
         }];
         UIBezierPath * maskPath;
-        maskPath=[UIBezierPath bezierPathWithRoundedRect:_progressFroView.bounds byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerBottomLeft) cornerRadii:CGSizeMake(_width*progress, _height)];
+        if(progress<1.0f)
+            maskPath=[UIBezierPath bezierPathWithRoundedRect:_progressFroView.bounds byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerBottomLeft) cornerRadii:CGSizeMake(_width*progress, _height)];
+
+        else
+            maskPath=[UIBezierPath bezierPathWithRoundedRect:_progressFroView.bounds byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerBottomLeft|UIRectCornerTopRight|UIRectCornerBottomRight) cornerRadii:CGSizeMake(_width*progress, _height)];
+
+            
         CAShapeLayer * maskLayer=[[CAShapeLayer alloc]init];
         maskLayer.frame=_progressFroView.bounds;
         maskLayer.path=maskPath.CGPath;
         _progressFroView.layer.mask=maskLayer;
+
     }
     else
         [self setProgress:progress]; 
